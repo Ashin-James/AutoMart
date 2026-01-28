@@ -1,0 +1,77 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <h2>Sales Overview</h2>
+    <div style="display:flex; gap:20px; margin-top:20px;">
+        <div class="card" style="flex:1;">
+            <h3>Total Sales</h3>
+            <p><strong>₹{{ total_sales_amount }}</strong></p>
+            <p>Total Bills: {{ total_bills }}</p>
+        </div>
+        <div class="card" style="flex:1;">
+            <h3>Today's Sales</h3>
+            <p><strong>₹{{ todays_amount }}</strong></p>
+            <p>Today's Bills: {{ todays_bills }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Sales Chart</h3>
+    <canvas id="salesChart"></canvas>
+</div>
+
+<div class="card">
+    <h2>All Sales Records</h2>
+    <table>
+        <tr>
+            <th>Sale ID</th>
+            <th>Date</th>
+            <th>Total Amount</th>
+        </tr>
+        {% for sale in sales %}
+        <tr>
+            <td>{{ sale.id }}</td>
+            <td>{{ sale.date }}</td>
+            <td>₹{{ sale.total_amount }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<a href="{% url 'export_sales_pdf' %}">
+    <button>Download PDF</button>
+</a>
+
+{{ chart_labels|json_script:"labels-data" }}
+{{ chart_values|json_script:"values-data" }}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const ctx = document.getElementById('salesChart');
+
+        // Grab the data from the script tags above
+        const labels = JSON.parse(document.getElementById('labels-data').textContent);
+        const dataValues = JSON.parse(document.getElementById('values-data').textContent);
+
+        if (ctx) {
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Daily Sales',
+                        data: dataValues,
+                        borderColor: 'rgb(75, 192, 192)',
+                        borderWidth: 2,
+                        fill: false
+                    }]
+                }
+            });
+        }
+    });
+</script>
+
+{% endblock %}

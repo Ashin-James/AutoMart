@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Bill Generated</title>
+</head>
+
+<body>
+    {% block content %}
+    <h2>Bill Generated</h2>
+
+    <p><strong>Product:</strong> {{ product.name }}</p>
+    <p><strong>Quantity:</strong> {{ quantity }}</p>
+    <p><strong>Total:</strong> ₹{{ total }}</p>
+
+    <a href="{% url 'billing' %}">Create New Bill</a>
+    {% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<h2>Admin Dashboard</h2>
+
+<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:20px;">
+
+    <div class="card">
+        <h3>Total Products</h3>
+        <p>{{ total_products }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Sales</h3>
+        <p>₹{{ total_sales }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Total Bills</h3>
+        <p>{{ total_bills }}</p>
+    </div>
+
+    <div class="card">
+        <h3>Today's Sales</h3>
+        <p>₹{{ todays_amount }}</p>
+    </div>
+
+</div>
+
+<div class="card" style="margin-top:30px;">
+    <h3>Quick Actions</h3>
+    <a href="{% url 'billing' %}"><button>New Bill</button></a>
+    <a href="{% url 'add_product' %}"><button>Add Product</button></a>
+    <a href="{% url 'sales_report' %}"><button>View Reports</button></a>
+</div>
+{% endblock %}

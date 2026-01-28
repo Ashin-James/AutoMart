@@ -1,0 +1,28 @@
+{% extends 'store/base.html' %}
+
+{% block content %}
+<div class="card">
+    <h2>Billing</h2>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>Product</label><br>
+        <select name="product">
+            {% for product in products %}
+            <option value="{{ product.id }}">
+                {{ product.name }} (Stock: {{ product.quantity }})
+            </option>
+            {% endfor %}
+        </select><br><br>
+
+        <label>Quantity</label><br>
+        <input type="number" name="quantity" min="1" required><br><br>
+        {% if error %}
+        <p style="color:red;">{{ error }}</p>
+        {% endif %}
+
+        <button type="submit">Generate Bill</button>
+    </form>
+</div>
+{% endblock %}
